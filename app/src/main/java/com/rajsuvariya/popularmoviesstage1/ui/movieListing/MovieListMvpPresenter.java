@@ -18,4 +18,6 @@ public interface MovieListMvpPresenter<V extends MovieListMvpView> extends MvpPr
     void sortByPopularitySelected();
 
     void sortByRatingSelected();
+
+    void fetchMovieList();
 }

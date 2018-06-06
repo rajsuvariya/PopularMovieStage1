@@ -53,14 +53,14 @@ public class MovieListPresenter<V extends MovieListMvpView> extends BasePresente
 
         isLoading.onNext(false);
 
-        fetchMovieList(nextPage);
+        fetchMovieList();
     }
 
     @Override
     public void onMovieListScrolled(int dy, int visibleItemCount, int totalItemCount, int pastVisibleItems, int lastVisibleItem) {
         if (dy > 0) {
             if ((lastVisibleItem + 6) >= totalItemCount) {
-                fetchMovieList(nextPage);
+                fetchMovieList();
             }
         }
     }
@@ -72,7 +72,7 @@ public class MovieListPresenter<V extends MovieListMvpView> extends BasePresente
 
         nextPage = 1;
         sortByPopularity = true;
-        fetchMovieList(nextPage);
+        fetchMovieList();
     }
 
     @Override
@@ -81,62 +81,68 @@ public class MovieListPresenter<V extends MovieListMvpView> extends BasePresente
             return;
         nextPage = 1;
         sortByPopularity = false;
-        fetchMovieList(nextPage);
+        fetchMovieList();
     }
 
-    private void fetchMovieList(final int pageNumber) {
+    @Override
+    public void fetchMovieList() {
         if (isLoading.getValue())
             return;
 
-        Observable<PopularMovieResponseModel> observable;
-        if (sortByPopularity){
-            observable = getDataManager().getPopularMovies(pageNumber);
+        if (getMvpView().isNetworkConnected()) {
+            Observable<PopularMovieResponseModel> observable;
+            if (sortByPopularity) {
+                observable = getDataManager().getPopularMovies(nextPage);
+            } else {
+                observable = getDataManager().getTopRatedMovies(nextPage);
+            }
+            getCompositeDisposable().add(
+                    observable
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io())
+                            .doOnSubscribe(new Consumer<Disposable>() {
+                                @Override
+                                public void accept(Disposable disposable) throws Exception {
+                                    isLoading.onNext(true);
+                                }
+                            })
+                            .doOnComplete(new Action() {
+                                @Override
+                                public void run() throws Exception {
+                                    isLoading.onNext(false);
+                                }
+                            })
+                            .doOnError(new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    isLoading.onNext(false);
+                                }
+                            })
+                            .subscribe(new Consumer<PopularMovieResponseModel>() {
+                                @Override
+                                public void accept(PopularMovieResponseModel popularMovieResponseModel) throws Exception {
+                                    if (popularMovieResponseModel.getPage() < nextPage) {
+                                        return;
+                                    }
+                                    if (nextPage == 1) {
+                                        getMvpView().populateMovieGrid(popularMovieResponseModel);
+                                    } else {
+                                        getMvpView().appendMovieGrid(popularMovieResponseModel);
+                                    }
+                                    if (popularMovieResponseModel.getTotalPages() > nextPage) {
+                                        nextPage = popularMovieResponseModel.getPage() + 1;
+                                    }
+                                }
+                            }, new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    throwable.printStackTrace();
+                                    getMvpView().onError(throwable.getMessage());
+                                    getMvpView().showApiErrorRetryDialog();
+                                }
+                            }));
         } else {
-            observable = getDataManager().getTopRatedMovies(pageNumber);
+            getMvpView().showInternetRetryDialog();
         }
-        getCompositeDisposable().add(
-                        observable
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .doOnSubscribe(new Consumer<Disposable>() {
-                            @Override
-                            public void accept(Disposable disposable) throws Exception {
-                                isLoading.onNext(true);
-                            }
-                        })
-                        .doOnComplete(new Action() {
-                            @Override
-                            public void run() throws Exception {
-                                isLoading.onNext(false);
-                            }
-                        })
-                        .doOnError(new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                isLoading.onNext(false);
-                            }
-                        })
-                        .subscribe(new Consumer<PopularMovieResponseModel>() {
-                            @Override
-                            public void accept(PopularMovieResponseModel popularMovieResponseModel) throws Exception {
-                                if (popularMovieResponseModel.getPage() < nextPage) {
-                                    return;
-                                }
-                                if (pageNumber == 1) {
-                                    getMvpView().populateMovieGrid(popularMovieResponseModel);
-                                } else {
-                                    getMvpView().appendMovieGrid(popularMovieResponseModel);
-                                }
-                                if (popularMovieResponseModel.getTotalPages() > nextPage) {
-                                    nextPage = popularMovieResponseModel.getPage() + 1;
-                                }
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                throwable.printStackTrace();
-                                getMvpView().onError(throwable.getMessage());
-                            }
-                        }));
     }
 }

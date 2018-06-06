@@ -5,7 +5,6 @@ package com.rajsuvariya.popularmoviesstage1.ui.base;
  * Created by @rajsuvariya on 15/03/17.
  */
 
-import com.androidnetworking.error.ANError;
 
 /**
  * Every presenter in the app must either implement this interface or extend BasePresenter
@@ -16,8 +15,4 @@ public interface MvpPresenter<V extends MvpView> {
     void onAttach(V mvpView);
 
     void onDetach();
-
-    void handleApiError(ANError error);
-
-    void setUserAsLoggedOut();
 }

@@ -16,4 +16,8 @@ public interface MovieListMvpView extends MvpView {
     void appendMovieGrid(PopularMovieResponseModel popularMovieResponseModel);
 
     void showLoader(int visibility);
+
+    void showInternetRetryDialog();
+
+    void showApiErrorRetryDialog();
 }

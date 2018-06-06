@@ -1,5 +1,6 @@
 package com.rajsuvariya.popularmoviesstage1.ui.movieListing;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import com.rajsuvariya.popularmoviesstage1.data.remote.model.PopularMovieRespons
 import com.rajsuvariya.popularmoviesstage1.data.remote.model.Result;
 import com.rajsuvariya.popularmoviesstage1.ui.base.BaseActivity;
 import com.rajsuvariya.popularmoviesstage1.ui.movieDetails.MovieDetailsActivity;
+import com.rajsuvariya.popularmoviesstage1.utils.DialogUtils;
 
 import javax.inject.Inject;
 
@@ -72,6 +74,40 @@ public class MovieListActivity extends BaseActivity implements MovieListMvpView,
     @Override
     public void showLoader(int visibility) {
         pbLoader.setVisibility(visibility);
+    }
+
+    @Override
+    public void showInternetRetryDialog() {
+        DialogUtils.dialogBoxWithButtons(this, "Internet Not Available!",
+                "It seems like your internet is not working. Please check your connection and try again"
+                , "Retry", "Cancel", false,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.fetchMovieList();
+                        dialog.dismiss();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+    }
+
+    @Override
+    public void showApiErrorRetryDialog() {
+        DialogUtils.dialogBoxWithButtons(this, "Internet Not Available!",
+                "It seems like your internet is not working. Please check your connection and try again"
+                , "Retry", null, false,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        mPresenter.fetchMovieList();
+                    }
+                }, null);
     }
 
     @Override
