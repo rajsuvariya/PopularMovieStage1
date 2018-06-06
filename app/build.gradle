@@ -22,12 +22,12 @@ android {
     productFlavors {
         uat {
             it.buildConfigField 'String', 'BASE_URL', "\"https://api.themoviedb.org/3/\""
-            it.buildConfigField 'String', 'api_key_v3', "\"69961736ee88b39584ba695c3da7a759\""
+            it.buildConfigField 'String', 'api_key_v3', "\"<API_KEY>\""
             dimension "mode"
         }
         prod {
             it.buildConfigField 'String', 'BASE_URL', "\"https://api.themoviedb.org/3/\""
-            it.buildConfigField 'String', 'api_key_v3', "\"69961736ee88b39584ba695c3da7a759\""
+            it.buildConfigField 'String', 'api_key_v3', "\"<API_KEY>\""
             dimension "mode"
         }
     }
