@@ -79,7 +79,7 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsMv
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Action will be available soon", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
