@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.rajsuvariya.popularmoviesstage1.R;
 import com.rajsuvariya.popularmoviesstage1.data.remote.model.Result;
+import com.rajsuvariya.popularmoviesstage1.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class MovieListingAdapter extends RecyclerView.Adapter<MovieListingAdapte
         }
 
         void bindData(final Result result) {
-            Picasso.with(itemView.getContext()).load("https://image.tmdb.org/t/p/w342" + result.getPosterPath()).into(ivMoviePoster);
+            Picasso.with(itemView.getContext()).load(AppConstants.TMDB_IMAGE_BASE_URL_W342 + result.getPosterPath()).into(ivMoviePoster);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

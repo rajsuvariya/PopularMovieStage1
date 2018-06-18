@@ -1,8 +1,10 @@
 
 package com.rajsuvariya.popularmoviesstage1.data.remote;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rajsuvariya.popularmoviesstage1.BuildConfig;
+import com.rajsuvariya.popularmoviesstage1.data.remote.model.MovieDetailsOutputModel;
 import com.rajsuvariya.popularmoviesstage1.data.remote.model.PopularMovieResponseModel;
 
 import java.util.concurrent.TimeUnit;
@@ -49,6 +51,11 @@ public class AppApiHelper implements ApiHelper {
     @Override
     public Observable<PopularMovieResponseModel> getTopRatedMovies(int pageNumber) {
         return mApiServiceEndPoints.getTopRatedMovies(BuildConfig.api_key_v3, pageNumber);
+    }
+
+    @Override
+    public Observable<MovieDetailsOutputModel> getMovieDetails(int id) {
+        return mApiServiceEndPoints.getVideos(id, BuildConfig.api_key_v3, "videos,credits");
     }
 
     private void setUpClient() {

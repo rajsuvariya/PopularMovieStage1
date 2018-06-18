@@ -35,7 +35,7 @@ public class MovieListPresenter<V extends MovieListMvpView> extends BasePresente
 
     private int nextPage = 1;
     private BehaviorSubject<Boolean> isLoading = BehaviorSubject.create();
-    private boolean sortByPopularity;
+    private boolean sortByPopularity = true;
 
     @Inject
     public MovieListPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {

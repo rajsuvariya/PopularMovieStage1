@@ -15,4 +15,9 @@
     <string name="language">Language</string>
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="sort_by_rating">Sort by rating</string>
+    <string name="video_unavailable_error">Sorry! There are no videos available at the moment</string>
+    <string name="videos">Videos</string>
+    <string name="cast">Cast</string>
+    <string name="genres">Genres</string>
+    <string name="details_not_available">Details not available</string>
 </resources>

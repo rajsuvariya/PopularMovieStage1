@@ -119,7 +119,7 @@ public class MovieListActivity extends BaseActivity implements MovieListMvpView,
     @Override
     public void onItemClicked(Result itemData) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra(MovieDetailsActivity.ITEM_DATA, itemData);
+        intent.putExtra(MovieDetailsActivity.MOVIE_ID, itemData.getId());
         startActivity(intent);
     }
 

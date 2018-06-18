@@ -1,6 +1,7 @@
 
 package com.rajsuvariya.popularmoviesstage1.data.remote;
 
+import com.rajsuvariya.popularmoviesstage1.data.remote.model.MovieDetailsOutputModel;
 import com.rajsuvariya.popularmoviesstage1.data.remote.model.PopularMovieResponseModel;
 
 import io.reactivex.Observable;
@@ -16,4 +17,6 @@ public interface ApiHelper {
     Observable<PopularMovieResponseModel> getPopularMovies(int pageNumber);
 
     Observable<PopularMovieResponseModel> getTopRatedMovies(int pageNumber);
+
+    Observable<MovieDetailsOutputModel> getMovieDetails(int id);
 }

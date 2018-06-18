@@ -21,6 +21,10 @@ public final class AppConstants {
 
     public static final String TIMESTAMP_FORMAT = "yyyyMMdd_HHmmss";
 
+    public static final String YOUTUBE_THUMBNAIL_BASE_URL= "https://img.youtube.com/vi/";
+    public static final String TMDB_IMAGE_BASE_URL_W500 = "https://image.tmdb.org/t/p/w500";
+    public static final String TMDB_IMAGE_BASE_URL_W342 = "https://image.tmdb.org/t/p/w342";
+
     private AppConstants() {
         // This utility class is not publicly instantiable
     }
